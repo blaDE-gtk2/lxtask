@@ -68,65 +68,67 @@ GtkWidget* create_main_window (void)
     gtk_window_set_default_size (GTK_WINDOW (window), win_width, win_height);
     gtk_window_set_icon_name (GTK_WINDOW (window),"utilities-system-monitor");
 
-    bbox1 = gtk_vbox_new (FALSE, 10);
+    bbox1 = gtk_vbox_new (FALSE, 2);
     gtk_widget_show (bbox1);
     gtk_container_add (GTK_CONTAINER (window), bbox1);
 
-	menubar = gtk_menu_bar_new();
-	gtk_widget_show( menubar );
-	gtk_box_pack_start(GTK_BOX (bbox1), menubar, FALSE, TRUE, 0 );
+  menubar = gtk_menu_bar_new();
+  gtk_widget_show( menubar );
+  gtk_box_pack_start(GTK_BOX (bbox1), menubar, FALSE, TRUE, 0 );
 
-	/* build menu */
-	menu = gtk_menu_new();
-	
-	item = gtk_menu_item_new_with_mnemonic( _("_File") );
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM (item), menu );
-	gtk_menu_shell_append( (GtkMenuShell*)menubar, item );
+  /* build menu */
+  menu = gtk_menu_new();
+  
+  item = gtk_menu_item_new_with_mnemonic( _("_File") );
+  gtk_menu_item_set_submenu(GTK_MENU_ITEM (item), menu );
+  gtk_menu_shell_append( (GtkMenuShell*)menubar, item );
 
-	item = gtk_image_menu_item_new_from_stock( GTK_STOCK_QUIT, NULL );
-	GtkAccelGroup* accel_group = gtk_accel_group_new();
-	gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
+  item = gtk_image_menu_item_new_from_stock( GTK_STOCK_QUIT, NULL );
+  GtkAccelGroup* accel_group = gtk_accel_group_new();
+  gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
 #if GTK_CHECK_VERSION(3,0,0)
-	gtk_widget_add_accelerator(item, "activate", accel_group, 
-		GDK_KEY_Escape, (GdkModifierType)0, GTK_ACCEL_VISIBLE);
-	gtk_widget_add_accelerator(item, "activate", accel_group, 
-		GDK_KEY_W, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+  gtk_widget_add_accelerator(item, "activate", accel_group, 
+    GDK_KEY_Escape, (GdkModifierType)0, GTK_ACCEL_VISIBLE);
+  gtk_widget_add_accelerator(item, "activate", accel_group, 
+    GDK_KEY_W, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 #else
-	gtk_widget_add_accelerator(item, "activate", accel_group, 
-		GDK_Escape, (GdkModifierType)NULL, GTK_ACCEL_VISIBLE);
-	gtk_widget_add_accelerator(item, "activate", accel_group, 
-		GDK_W, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+  gtk_widget_add_accelerator(item, "activate", accel_group, 
+    GDK_Escape, (GdkModifierType)NULL, GTK_ACCEL_VISIBLE);
+  gtk_widget_add_accelerator(item, "activate", accel_group, 
+    GDK_W, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 #endif
-	gtk_menu_shell_append( (GtkMenuShell*)menu, item );
-	g_signal_connect( item, "activate", G_CALLBACK(gtk_main_quit), NULL );
+  gtk_menu_shell_append( (GtkMenuShell*)menu, item );
+  g_signal_connect( item, "activate", G_CALLBACK(gtk_main_quit), NULL );
 
-	item = gtk_menu_item_new_with_mnemonic( _("_View") );
-	gtk_menu_shell_append( (GtkMenuShell*)menubar, item );
+  item = gtk_menu_item_new_with_mnemonic( _("_View") );
+  gtk_menu_shell_append( (GtkMenuShell*)menubar, item );
 
-	menu = create_mainmenu();
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM (item), menu );
+  menu = create_mainmenu();
+  gtk_menu_item_set_submenu(GTK_MENU_ITEM (item), menu );
 
-	item = gtk_menu_item_new_with_mnemonic( _("_Help") );
-	gtk_menu_shell_append( (GtkMenuShell*)menubar, item );
-	menu = gtk_menu_new();
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM (item), menu );
+  
+
+  item = gtk_menu_item_new_with_mnemonic( _("_Help") );
+  gtk_menu_shell_append( (GtkMenuShell*)menubar, item );
+  menu = gtk_menu_new();
+  gtk_menu_item_set_submenu(GTK_MENU_ITEM (item), menu );
 
     item= gtk_image_menu_item_new_from_stock ("gtk-about", NULL);
     gtk_widget_show (item);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
     g_signal_connect ((gpointer) item, "activate", G_CALLBACK (show_about_dialog), NULL);
 
-	gtk_widget_show_all( menubar );
+  gtk_widget_show_all( menubar );
 
-	/* window content */
-    vbox1 = gtk_vbox_new (FALSE, 10);
+  /* window content */
+    vbox1 = gtk_vbox_new (FALSE, 2);
     gtk_widget_show (vbox1);
     gtk_box_pack_start( GTK_BOX(bbox1), vbox1, TRUE, TRUE, 0 );
-    gtk_container_set_border_width (GTK_CONTAINER (vbox1), 6);
+    gtk_container_set_border_width (GTK_CONTAINER (vbox1), 2);
 
-    system_info_box = gtk_hbox_new (TRUE, 10);
+    system_info_box = gtk_hbox_new (FALSE, 5);
     gtk_widget_show (system_info_box);
-    gtk_box_pack_start (GTK_BOX (vbox1), system_info_box, FALSE, TRUE, 0);
+    
 
     cpu_usage_progress_bar_box = gtk_event_box_new ();
     cpu_usage_progress_bar = gtk_progress_bar_new ();
@@ -137,7 +139,7 @@ GtkWidget* create_main_window (void)
     gtk_widget_show (cpu_usage_progress_bar);
     gtk_widget_show (cpu_usage_progress_bar_box);
     gtk_container_add (GTK_CONTAINER (cpu_usage_progress_bar_box), cpu_usage_progress_bar);
-    gtk_box_pack_start (GTK_BOX (system_info_box), cpu_usage_progress_bar_box, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (system_info_box), cpu_usage_progress_bar_box, FALSE, FALSE, 0);
 
     mem_usage_progress_bar_box = gtk_event_box_new ();
     mem_usage_progress_bar = gtk_progress_bar_new ();
@@ -168,9 +170,10 @@ GtkWidget* create_main_window (void)
 
     gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(list_store), COLUMN_TIME, GTK_SORT_ASCENDING);
 
+    gtk_box_pack_start (GTK_BOX (vbox1), system_info_box, FALSE, TRUE, 0);
     bbox1 = gtk_hbutton_box_new();
     gtk_box_pack_start(GTK_BOX(vbox1), bbox1, FALSE, TRUE, 0);
-    gtk_widget_show (bbox1);
+    // gtk_widget_show (bbox1);
 
     button3 = gtk_toggle_button_new_with_label (_("more details"));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(button3), full_view);
@@ -337,6 +340,7 @@ GtkWidget* create_mainmenu (void)
     GtkWidget *show_other_tasks1;
     GtkWidget *show_cached_as_free1;
     GtkWidget *show_full_path1;
+    GtkWidget *show_full_view;
     GtkWidget *separator1;
     GtkAccelGroup *accel_group;
 
@@ -369,6 +373,11 @@ GtkWidget* create_mainmenu (void)
     gtk_widget_show (show_cached_as_free1);
     gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), show_cached_as_free1);
 
+    show_full_view = gtk_check_menu_item_new_with_mnemonic (_("Show all columns"));
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(show_full_view), full_view);
+    gtk_widget_show (show_full_view);
+    gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), show_full_view);
+
     separator1 = gtk_separator_menu_item_new();
     gtk_widget_show(separator1);
     gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), separator1);
@@ -382,6 +391,7 @@ GtkWidget* create_mainmenu (void)
     g_signal_connect ((gpointer) show_root_tasks1, "toggled", G_CALLBACK (on_show_tasks_toggled), (void *)0);
     g_signal_connect ((gpointer) show_other_tasks1, "toggled", G_CALLBACK (on_show_tasks_toggled), (void *)-1);
     g_signal_connect ((gpointer) show_full_path1, "toggled", G_CALLBACK (on_show_tasks_toggled), (void *)-2);
+    g_signal_connect ((gpointer) show_full_view, "toggled", G_CALLBACK (on_show_tasks_toggled), (void *)-1);
     g_signal_connect ((gpointer) show_cached_as_free1, "toggled", G_CALLBACK (on_show_cached_as_free_toggled), (void *)0);
 
     gtk_menu_set_accel_group (GTK_MENU (mainmenu), accel_group);
@@ -412,7 +422,7 @@ void show_about_dialog(void)
 #if !GTK_CHECK_VERSION(2,12,0)
     gtk_about_dialog_set_name ( (GtkAboutDialog*)about_dlg, _( "LXTask" ) );
 #else
-	gtk_about_dialog_set_program_name ( (GtkAboutDialog*)about_dlg, _( "LXTask" ) );
+  gtk_about_dialog_set_program_name ( (GtkAboutDialog*)about_dlg, _( "LXTask" ) );
 #endif
     /* gtk_about_dialog_set_logo( (GtkAboutDialog*)about_dlg, gdk_pixbuf_new_from_file(  PACKAGE_DATA_DIR"/pixmaps/lxtask.png", NULL ) ); */
     gtk_about_dialog_set_logo_icon_name( (GtkAboutDialog*)about_dlg, "utilities-system-monitor" );
@@ -620,10 +630,10 @@ void change_full_path(void)
     {
         struct task *tmp = &g_array_index(task_array, struct task, i);
         struct task *new_tmp = &g_array_index(new_task_list, struct task, i);
-	g_strlcpy(tmp->name, new_tmp->name, 255);
+  g_strlcpy(tmp->name, new_tmp->name, 255);
         refresh_list_item(i);
     }
-	
+  
     g_array_free(new_task_list, TRUE);    
 }
 
